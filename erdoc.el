@@ -28,6 +28,7 @@
 (defvar *erdoc-errors-log* (expand-file-name "~/erdoc-errors.log"))
 (defvar *erdoc-index-file* (expand-file-name "~/erdoc-index.lisp"))
 (defvar *erdoc-keys-file* (expand-file-name "~/erdoc-keys"))
+(defvar *erdoc-browse-url-function* 'w3m-browse-url)
 (defvar *erdoc-index* nil)
 
 (defun erdoc-grab-stdout (&rest call-process-args)
@@ -80,7 +81,11 @@
                                          " - < " *erdoc-keys-file*)))
          (cell (assoc key *erdoc-index*)))
     (when cell
-      (browse-url (concat "file://" (cdr cell))))))
+      (let* ((bf *erdoc-browse-url-function*)
+             (browse-url-browser-function (or (and bf
+                                                   (indirect-function bf))
+                                              browse-url-browser-function)))
+        (browse-url (concat "file://" (cdr cell)))))))
 
 (provide 'erdoc)
 ;;; erdoc.el ends here
