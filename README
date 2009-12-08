@@ -21,6 +21,10 @@ assumes that your OS supports sufficiently large argument list for
 processes. Recent Linux kernels don't have any limit here. But you may
 need some fixes on other OSes. Patches are welcome.
 
+Note that indexer relies on structure of html pages of function's
+documentation, so it may fail for older or newer versions of
+Erlang. Patches are welcome.
+
 Place erdoc.el in a place where emacs will find it and arrange it's
 loading.
 
