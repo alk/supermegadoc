@@ -15,7 +15,7 @@ or http://github.com/alk/gpicker).
 
 You'll need to pre-process erlang html documentation. ./run-indexer.sh
 does that. But you may need to edit path to erlang docs in it. This
-script outputs documentation index as a lisp lisp to standard
+script outputs documentation index as a lisp list to standard
 output. Redirect it to ~/erdoc-index.lisp. Note that this script
 assumes that your OS supports sufficiently large argument list for
 processes. Recent Linux kernels don't have any limit here. But you may
