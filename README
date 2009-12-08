@@ -1,0 +1,34 @@
+gpicker support for Erlang function documentation
+-------------------------------------------------
+
+Erlang documentation is quite inconvenient to use. So I decided to
+use gpicker for quick browsing of available modules/functions and
+navigation to their corresponding html documentation.
+
+You will need latest gpicker from git
+(http://savannah.nongnu.org/projects/gpicker (post bugreports here)
+or http://github.com/alk/gpicker).
+
+You'll need to pre-process erlang html documentation. ./run-indexer.sh
+does that. But you may need to edit path to erlang docs in it. This
+script outputs documentation index as a lisp lisp to standard
+output. Redirect it to ~/erdoc-index.lisp. Note that this script
+assumes that your OS supports sufficiently large argument list for
+processes. Recent Linux kernels don't have any limit here. But you may
+need some fixes on other OSes. Patches are welcome.
+
+Place erdoc.el in a place where emacs will find it and arrange it's
+loading.
+
+My .emacs has following lines:
+
+(autoload 'erdoc-doc "erdoc" nil t)
+(add-hook 'erlang-mode-hook
+          #'(lambda ()
+              (local-set-key (kbd "s-q") 'erdoc-doc)))
+
+This arranges autoload of erdoc and binds erdoc-doc to Super-q. Super
+is 'a button with flag' on most keyboards and Command on mac's.
+
+NOTE: Current erdoc.el also relies on w3m for displaying of html. Change
+*erdoc-browse-url-function* to browse-url to use default browser.
