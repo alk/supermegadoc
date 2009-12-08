@@ -85,6 +85,10 @@
              (browse-url-browser-function (or (and bf
                                                    (indirect-function bf))
                                               browse-url-browser-function)))
+        (when (and (listp browse-url-browser-function)
+                   (eql (car browse-url-browser-function) 'autoload))
+          (load (cadr browse-url-browser-function))
+          (setq browse-url-browser-function (indirect-function bf)))
         (browse-url (concat "file://" (cdr cell)))))))
 
 (provide 'erdoc)
