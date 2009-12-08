@@ -32,3 +32,5 @@ is 'a button with flag' on most keyboards and Command on mac's.
 
 NOTE: Current erdoc.el also relies on w3m for displaying of html. Change
 *erdoc-browse-url-function* to browse-url to use default browser.
+NOTE: it seems that you'll need w3m-el-snapshot on debian/ubuntu, not
+w3m-el for recent emacs.
