@@ -78,7 +78,7 @@
   (let* ((key (erdoc-grab-stdout "/bin/sh" "-c"
                                  (concat "gpicker --dir-separator=: "
                                          "--init-filter=" (shell-quote-argument (ffap-string-at-point))
-                                         " - < " *erdoc-keys-file*)))
+                                         " - < " (shell-quote-argument *erdoc-keys-file*))))
          (cell (assoc key *erdoc-index*)))
     (when cell
       (let* ((bf *erdoc-browse-url-function*)
