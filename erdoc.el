@@ -41,7 +41,7 @@
                                          (cdr call-process-args))))
                       (if (eql status 0)
                           (buffer-string)
-                        (message "%s exited with status %d" (car call-process-args) status)
+                        (message "%s exited with status %s" (car call-process-args) status)
                         (save-excursion
                           (set-buffer "*Messages*")
                           (goto-char (point-max))
