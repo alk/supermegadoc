@@ -5,6 +5,8 @@ require 'pp'
 require 'rubygems'
 require 'hpricot'
 
+require 'common'
+
 def check_module_documentation(path)
   doc = Hpricot(IO.read(path))
   name_candidates = (doc/"body > center + center > h1")
@@ -40,37 +42,36 @@ def check_module_documentation(path)
   }
 end
 
-data = ARGV.map do |path|
+def process_file(path)
+  path = File.expand_path(path)
   STDERR.print "processing #{path}.."
   rv = check_module_documentation(path)
   STDERR.puts(rv ? "ok" : "garbage")
   rv
-end.compact
+end
 
-class String
-  def to_elisp
-    # hopefully our data needs no escaping
-    '"' << self << '"'
+data = ARGV.map do |path|
+  if File.directory?(path)
+    Dir.chdir(path) do
+      Dir['**/*.html'].map do |fpath|
+        process_file(fpath)
+      end
+    end
+  else
+    process_file(path)
+  end
+end.flatten.compact
+
+data.each do |modinfo|
+  mod_name = modinfo[:module]
+  path = modinfo[:path]
+  modinfo[:hash].each do |name, hash|
+    key = "#{mod_name}:#{name}"
+    value = "file://#{path}##{hash}"
+    print_cdb_entry key, value
   end
 end
 
-class Array
-  def to_elisp
-    '(' << (self.map {|i| i.to_elisp}).join(' ')  << ")"
-  end
-end
+print_cdb_entry "--extra-args", "--dir-separator=':'"
 
-class Symbol
-  def to_elisp
-    to_s
-  end
-end
-
-class Hash
-  def to_elisp
-    # alist syntax
-    '(' << self.map {|k,v| '(' << k.to_elisp << " . " << v.to_elisp << ')'}.join(' ') << ')'
-  end
-end
-
-puts data.to_elisp
+puts

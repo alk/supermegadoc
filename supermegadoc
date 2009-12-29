@@ -1,0 +1,59 @@
+#!/usr/bin/ruby
+
+$for_emacs_w3m = false
+$no_devhelp = false
+
+mega_extra = ''
+
+loop do
+  if ARGV[0] == '--for-emacs'
+    $for_emacs = true
+    ARGV.shift
+    redo
+  end
+
+  if ARGV[0][0,14] == '--init-filter='
+    mega_extra = ARGV[0][14..-1]
+    ARGV.shift
+    redo
+  end
+
+  if ARGV[0] == '--no-devhelp'
+    $no_devhelp = true
+    ARGV.shift
+    redo
+  end
+
+  break
+end
+
+ARGV[0] or raise("Need path to .cdb")
+extra_args = `cdb -q -- '#{ARGV[0]}' --extra-args`
+output = `cdb -l -m '#{ARGV[0]}' | grep -v -- --extra-args | gpicker #{extra_args} #{mega_extra} --name-separator='\\n' -`.chomp
+exit if output.empty?
+
+alternatives = `cdb -q -- '#{ARGV[0]}' '#{output}'`.split("\0")
+
+if $for_emacs
+  print alternatives[0]
+  exit
+end
+
+alternatives = alternatives.reverse
+alternatives.each do |u|
+  if u[0,8] == 'devhelp:'
+    next if $no_devhelp
+    begin
+      exec "devhelp", "-s" , u[8..-1]
+    rescue Exception
+    end
+  elsif u[0,3] == 'ri:'
+    exec 'ri', '-T', u[3..-1]
+  elsif (prefix = u[0,5]) == 'http:' || prefix == 'file:'
+    exec "gnome-www-browser", u
+#    exec "x-www-browser", u
+  end
+end
+
+# if unknown URL scheme
+print alternatives[0]

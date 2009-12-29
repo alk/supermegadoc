@@ -2,43 +2,46 @@ Copying and distribution of this file, with or without modification,
 are permitted in any medium without royalty provided the copyright
 notice and this notice are preserved.
 
-gpicker support for Erlang function documentation
+gpicker support for function documentation
 -------------------------------------------------
 
 Erlang documentation is quite inconvenient to use. So I decided to
 use gpicker for quick browsing of available modules/functions and
 navigation to their corresponding html documentation.
 
+I've recently extended this code to ri and devhelp documentation.
+
 You will need latest gpicker from git
 (http://savannah.nongnu.org/projects/gpicker (post bugreports here)
 or http://github.com/alk/gpicker).
 
-You'll need to pre-process erlang html documentation. ./run-indexer.sh
-does that. But you may need to edit path to erlang docs in it. This
-script outputs documentation index as a lisp list to standard
-output. Redirect it to ~/erdoc-index.lisp. Note that this script
-assumes that your OS supports sufficiently large argument list for
-processes. Recent Linux kernels don't have any limit here. But you may
-need some fixes on other OSes. Patches are welcome.
+You will also need 'cdb' tool from tinycdb package.
 
-Note that indexer relies on structure of html pages of function's
-documentation, so it may fail for older or newer versions of
-Erlang. Patches are welcome.
+You'll need to pre-process documentation. Adjust Makefile and run
+make.
 
-Place erdoc.el in a place where emacs will find it and arrange it's
+Note that erlang documentation indexer relies on structure of html
+pages of function's documentation, so it may fail for older or newer
+versions of Erlang. Patches are welcome.
+
+Place supermegadoc.el in a place where emacs will find it and arrange it's
 loading.
 
 My .emacs has following lines:
 
-(autoload 'erdoc-doc "erdoc" nil t)
+(autoload 'supermegadoc-erlang "supermegadoc" nil t)
+(autoload 'supermegadoc-ri "supermegadoc" nil t)
+(autoload 'supermegadoc-devhelp "supermegadoc" nil t)
 (add-hook 'erlang-mode-hook
           #'(lambda ()
-              (local-set-key (kbd "s-q") 'erdoc-doc)))
+              (local-set-key (kbd "s-q") 'supermegadoc-erlang)))
 
-This arranges autoload of erdoc and binds erdoc-doc to Super-q. Super
-is 'a button with flag' on most keyboards and Command on mac's.
+This arranges autoload of supermegadoc and binds supermegadoc-erlang
+Super-q. Super is 'a button with flag' on most keyboards and Command
+on mac's.
 
-NOTE: Current erdoc.el also relies on w3m for displaying of html. Change
-*erdoc-browse-url-function* to browse-url to use default browser.
+NOTE: Current supermegadoc.el also relies on w3m for displaying of
+html. Change *erdoc-browse-url-function* to browse-url to use default
+browser.
 NOTE: it seems that you'll need w3m-el-snapshot on debian/ubuntu, not
 w3m-el for recent emacs.
