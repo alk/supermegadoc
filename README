@@ -24,6 +24,10 @@ Note that erlang documentation indexer relies on structure of html
 pages of function's documentation, so it may fail for older or newer
 versions of Erlang. Patches are welcome.
 
+Run 'make install' to install supermegadoc into /usr/local/bin. It is
+now usable as a standalone program. But there's also a Emacs
+integration.
+
 Place supermegadoc.el in a place where emacs will find it and arrange it's
 loading.
 
