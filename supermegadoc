@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 
-$for_emacs_w3m = false
+$for_emacs = false
 $no_devhelp = false
 
 mega_extra = ''
