@@ -18,7 +18,7 @@ indexes.each do |path|
   kwlines = IO.readlines(path).grep(/<keyword/)
   dirpath = File.dirname(File.expand_path(path))
   kwlines.each do |l|
-    unless l =~ /<keyword\s+type="(.*?)"\s+name="(.*?)"\s+link="(.*?)"\/>/
+    unless l =~ /<keyword\s+type="(.*?)"\s+name="(.*?)"\s+link="(.*?)"\s*\/>/
       STDERR.puts "strange line: #{l}"
       next
     end
