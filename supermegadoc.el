@@ -51,10 +51,12 @@
 
 (defun supermegadoc-run (cdb-path)
   (setq cdb-path (expand-file-name cdb-path *supermegadoc-index-dir*))
-  (supermegadoc-grab-stdout "supermegadoc"
-                            "--for-emacs"
-                            (concat "--init-filter=" (ffap-string-at-point))
-                            cdb-path))
+  (let ((rv (supermegadoc-grab-stdout "supermegadoc"
+                                      "--for-emacs"
+                                      (concat "--init-filter=" (ffap-string-at-point))
+                                      cdb-path)))
+    (and (not (string-equal rv ""))
+         rv)))
 
 (defun supermegadoc-html (cdb-path)
   (let ((url (supermegadoc-run cdb-path)))
