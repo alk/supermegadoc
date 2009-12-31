@@ -24,13 +24,12 @@ indexes.each do |path|
     end
     type, name, link = $1, $2, $3
     type, name, link = unq(type), unq(name), unq(link)
-    original_name = name
     name = name.chomp(" ()")
     if type == "enum" && name[0,5] == "enum "
       name = name[5..-1]
     end
     next if type.empty?
-    print_cdb_entry "#{name}:#{type}", "file:///#{dirpath}/#{link}\0devhelp:#{original_name}"
+    print_cdb_entry "#{name}:#{type}", "file:///#{dirpath}/#{link}\0devhelp:#{name}"
   end
 end
 
