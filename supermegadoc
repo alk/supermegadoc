@@ -28,11 +28,23 @@ loop do
 end
 
 ARGV[0] or raise("Need path to .cdb")
-extra_args = `cdb -q -- '#{ARGV[0]}' --extra-args`
-output = `cdb -l -m '#{ARGV[0]}' | grep -v -- --extra-args | gpicker #{extra_args} #{mega_extra} --name-separator='\\n' -`.chomp
+
+cdb_path = ARGV[0]
+
+unless File.readable?(cdb_path)
+  candidate = File.expand_path("~/.supermegadoc/#{cdb_path}")
+  if File.readable?(candidate)
+    cdb_path = candidate
+  else
+    raise "given .cdb file not found: #{cdb_path}"
+  end
+end
+
+extra_args = `cdb -q -- '#{cdb_path}' --extra-args`
+output = `cdb -l -m '#{cdb_path}' | grep -v -- --extra-args | gpicker #{extra_args} #{mega_extra} --name-separator='\\n' -`.chomp
 exit if output.empty?
 
-alternatives = `cdb -q -- '#{ARGV[0]}' '#{output}'`.split("\0")
+alternatives = `cdb -q -- '#{cdb_path}' '#{output}'`.split("\0")
 
 if $for_emacs
   print alternatives[0]
