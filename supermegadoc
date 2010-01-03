@@ -36,7 +36,12 @@ unless File.readable?(cdb_path)
   if File.readable?(candidate)
     cdb_path = candidate
   else
-    raise "given .cdb file not found: #{cdb_path}"
+    candidate = candidate + ".cdb"
+    if File.readable?(candidate)
+      cdb_path = candidate
+    else
+      raise "given .cdb file not found: #{cdb_path}"
+    end
   end
 end
 
