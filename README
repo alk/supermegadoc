@@ -11,9 +11,10 @@ navigation to their corresponding html documentation.
 
 I've recently extended this code to ri and devhelp documentation.
 
-You will need latest gpicker from git
-(http://savannah.nongnu.org/projects/gpicker (post bugreports here)
-or http://github.com/alk/gpicker).
+You will need recent gpicker (at least 2.0.0). From
+http://savannah.nongnu.org/projects/gpicker. Building from sources at
+http://git.savannah.gnu.org/cgit/gpicker.git or
+http://github.com/alk/gpicker is possible too.
 
 You will also need 'cdb' tool from tinycdb package.
 
