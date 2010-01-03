@@ -1,5 +1,15 @@
 #!/usr/bin/ruby
 
+if $0 =~ /superman\z/
+  init_filter = ARGV[0]
+  if init_filter
+    ARGV.replace(["--init-filter=#{init_filter}",
+                  File.expand_path("~/.supermegadoc/man.cdb")])
+  else
+    ARGV.replace([File.expand_path("~/.supermegadoc/man.cdb")])
+  end
+end
+
 $for_emacs = false
 $no_devhelp = false
 

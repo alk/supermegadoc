@@ -21,5 +21,6 @@ install_cdb: $(BUILT_CDB_FILES)
 
 install: supermegadoc
 	cp supermegadoc /usr/local/bin/
+	ln -f /usr/local/bin/supermegadoc /usr/local/bin/superman
 
 .PHONY: ri.cdb devhelp.cdb erdoc.cdb man.cdb install_cdb
