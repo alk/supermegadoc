@@ -12,7 +12,7 @@ loop do
     redo
   end
 
-  if ARGV[0][0,14] == '--init-filter='
+  if ARGV[0] && ARGV[0][0,14] == '--init-filter='
     mega_extra = "'#{ARGV[0]}'"
     ARGV.shift
     redo
