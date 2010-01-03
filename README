@@ -5,11 +5,11 @@ notice and this notice are preserved.
 gpicker support for function documentation
 -------------------------------------------------
 
-Erlang documentation is quite inconvenient to use. So I decided to
-use gpicker for quick browsing of available modules/functions and
+Erlang documentation is quite inconvenient to use. So I decided to use
+gpicker for quick browsing of available modules/functions and
 navigation to their corresponding html documentation.
 
-I've recently extended this code to ri and devhelp documentation.
+I've recently extended this code to ri, man and devhelp documentation.
 
 You will need recent gpicker (at least 2.0.0). From
 http://savannah.nongnu.org/projects/gpicker. Building from sources at
@@ -29,14 +29,15 @@ Run 'make install' to install supermegadoc into /usr/local/bin. It is
 now usable as a standalone program. But there's also a Emacs
 integration.
 
-Place supermegadoc.el in a place where emacs will find it and arrange it's
-loading.
+Place supermegadoc.el in a place where emacs will find it and arrange
+it's loading.
 
 My .emacs has following lines:
 
 (autoload 'supermegadoc-erlang "supermegadoc" nil t)
 (autoload 'supermegadoc-ri "supermegadoc" nil t)
 (autoload 'supermegadoc-devhelp "supermegadoc" nil t)
+(autoload 'superwoman "supermegadoc" nil t)
 (add-hook 'erlang-mode-hook
           #'(lambda ()
               (local-set-key (kbd "s-q") 'supermegadoc-erlang)))
@@ -48,5 +49,6 @@ on mac's.
 NOTE: Current supermegadoc.el also relies on w3m for displaying of
 html. Change *erdoc-browse-url-function* to browse-url to use default
 browser.
+
 NOTE: it seems that you'll need w3m-el-snapshot on debian/ubuntu, not
 w3m-el for recent emacs.

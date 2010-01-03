@@ -5,19 +5,27 @@ require 'common'
 ARGV[0] || raise("Need base dir! (e.g. /usr/share/man)")
 
 def process_dir(dir)
-  files = IO.popen("cd #{dir} && find . -follow -type f -o -type l","r") {|f| f.readlines.map {|l| l.chomp}}
+  dir = File.expand_path(dir)
+  files = IO.popen("find #{dir} -follow -type f -o -type l","r") {|f| f.readlines.map {|l| l.chomp}}
 
+  hash = {}
   files.map do |path|
     next unless path =~ /(?:\A|\/)man(\d+)\/(.+)\.(\d+)(\.(gz|bz2))?\z/
     next unless $1 == $3
-    next unless File.readable?(File.expand_path(dir, path))
+    next unless File.readable?(path)
     section, name = $1, $2
-    "#{section}/#{name}"
+    hash["#{section}/#{name}"] = path
   end
+  hash
 end
 
-ARGV.map(&self.method(:process_dir)).flatten.uniq.compact.each do |res|
-  print_cdb_entry "#{res}", "man:#{res}"
+hashes = ARGV.map(&self.method(:process_dir))
+hash = hashes.reverse.inject({}) do |r,h|
+  r.merge(h)
+end
+
+hash.each do |k,v|
+  print_cdb_entry k, "man-file:#{v}\0man:#{k}"
 end
 
 puts
