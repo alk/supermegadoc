@@ -51,14 +51,19 @@ if $for_emacs
   exit
 end
 
+def silent_exec(*args)
+  exec(*args)
+rescue Exception
+end
+
 alternatives = alternatives.reverse
 alternatives.each do |u|
   if u[0,8] == 'devhelp:'
     next if $no_devhelp
-    begin
-      exec "devhelp", "-s" , u[8..-1]
-    rescue Exception
-    end
+    silent_exec "devhelp", "-s" , u[8..-1]
+  elsif u[0,4] == 'man:'
+    sec, name = u[4..-1].split('/',2)
+    silent_exec "man", sec, name
   elsif u[0,3] == 'ri:'
     exec 'ri', '-T', u[3..-1]
   elsif (prefix = u[0,5]) == 'http:' || prefix == 'file:'
