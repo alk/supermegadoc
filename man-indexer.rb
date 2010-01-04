@@ -10,7 +10,7 @@ def process_dir(dir)
 
   hash = {}
   files.map do |path|
-    raise path unless path =~ /(?:\A|\/)man(\d)\/(.+)\.(\d[^\.]*)(\.(gz|bz2))?\z/
+    next unless path =~ /(?:\A|\/)man(\d)\/(.+)\.(\d[^\.]*)(\.(gz|bz2))?\z/
     raise path unless $1 == $3[0,1]
     next unless File.readable?(path)
     section, name = $3, $2
