@@ -78,6 +78,9 @@ alternatives.each do |u|
     silent_exec "devhelp", "-s" , u[8..-1]
   elsif u[0,4] == 'man:'
     sec, name = u[4..-1].split('/',2)
+    unless STDOUT.isatty
+      ENV['MANOPT'] = '-Hx-www-browser'
+    end
     silent_exec "man", sec, name
   elsif u[0,3] == 'ri:'
     exec 'ri', '-T', u[3..-1]
