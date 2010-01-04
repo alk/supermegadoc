@@ -24,7 +24,7 @@ indexes.each do |path|
     end
     type, name, link = $1, $2, $3
     type, name, link = unq(type), unq(name), unq(link)
-    name = name.chomp(" ()")
+    name = name.chomp("()").strip
     if type == "enum" && name[0,5] == "enum "
       name = name[5..-1]
     end
