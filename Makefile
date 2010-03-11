@@ -7,7 +7,7 @@ ri.cdb:
 	./ri-indexer.rb /usr/share/ri/1.8 /var/lib/gems/1.8/doc | cdb -c $@
 
 erdoc.cdb:
-	./erdoc-indexer.rb /usr/share/doc/erlang-doc-html/html | cdb -c $@
+	./erdoc-indexer.rb /usr/share/doc/erlang-doc | cdb -c $@
 
 devhelp.cdb:
 	./devhelp-indexer.rb /usr/share/gtk-doc/html | cdb -c $@
