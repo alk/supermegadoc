@@ -3,6 +3,7 @@
 require 'pp'
 
 require 'rubygems'
+require 'forkoff'
 require 'hpricot'
 
 require 'common'
@@ -53,7 +54,7 @@ end
 data = ARGV.map do |path|
   if File.directory?(path)
     Dir.chdir(path) do
-      Dir['**/*.html'].map do |fpath|
+      Dir['**/*.html'].forkoff do |fpath|
         process_file(fpath)
       end
     end
