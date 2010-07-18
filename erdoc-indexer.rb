@@ -5,13 +5,14 @@ require 'pp'
 require 'rubygems'
 require 'forkoff'
 require 'hpricot'
+require 'active_support'
 
 require 'common'
 
 def check_module_documentation(path)
   doc = Hpricot(IO.read(path))
-  name_candidates = (doc/"body > center + center > h1")
-#  pp name_candidates
+  name_candidates = (doc/"body div.innertube > center > h1")
+  # pp name_candidates
   if name_candidates.size != 1 || name_candidates[0].children.size != 1 # || !(String === name_candidates[0].children[0])
     return
   end
@@ -20,20 +21,22 @@ def check_module_documentation(path)
 
   funs_hash = {}
 
-  fun_names = (doc/"body > p > a > span[@class=bold_code]")
+  fun_names = (doc/"body div.innertube > p > a > span[@class=bold_code]")
+  #p fun_names.length
+  module_prefix = module_name + ':'
   fun_names.each do |element|
     fragment_name = element.parent.attributes['name']
-    text = element.children[0].to_s
-#    pp text
+    next if fragment_name.blank?
+    text = element.children[0].to_s.strip
+    next if text.empty?
+    # pp text
     unless text =~ /\A([^\(]+)\(/ || text =~ /\A([^\(]+)  &#60;/
-      STDERR.puts "ooops at #{text}.\nelement is #{element.pretty_inspect}" #\n\ndoc: #{doc.pretty_inspect}"
+      # STDERR.puts "ooops at #{text}.\nelement is #{element.pretty_inspect}" #\n\ndoc: #{doc.pretty_inspect}"
       next
     end
-    name = $1
-    if fragment_name =~ /-(\d+)\z/
-      name << "/" << $1
-    end
-    funs_hash[name] = fragment_name.to_s unless funs_hash[name]
+    
+    text = text[module_prefix.length..-1] if text.starts_with?(module_prefix)
+    funs_hash[text] = fragment_name.to_s unless funs_hash[text]
   end
 
   {
@@ -67,12 +70,12 @@ data.each do |modinfo|
   mod_name = modinfo[:module]
   path = modinfo[:path]
   modinfo[:hash].each do |name, hash|
-    key = "#{mod_name}:#{name}"
+    key = "#{mod_name}/#{name}"
     value = "file://#{path}##{hash}"
     print_cdb_entry key, value
   end
 end
 
-print_cdb_entry "--extra-args", "--dir-separator=':'"
+print_cdb_entry "--extra-args", "--dir-separator='/'"
 
 puts
