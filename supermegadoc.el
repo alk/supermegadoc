@@ -49,17 +49,17 @@
           (delete-file *supermegadoc-errors-log*)
         (error nil)))))
 
-(defun supermegadoc-run (cdb-path)
+(defun supermegadoc-run (cdb-path &optional init-filter)
   (setq cdb-path (expand-file-name cdb-path *supermegadoc-index-dir*))
   (let ((rv (supermegadoc-grab-stdout "supermegadoc"
                                       "--for-emacs"
-                                      (concat "--init-filter=" (ffap-string-at-point))
+                                      (concat "--init-filter=" (or init-filter (ffap-string-at-point)))
                                       cdb-path)))
     (and (not (string-equal rv ""))
          rv)))
 
-(defun supermegadoc-html (cdb-path)
-  (let ((url (supermegadoc-run cdb-path)))
+(defun supermegadoc-html (cdb-path &optional init-filter)
+  (let ((url (supermegadoc-run cdb-path init-filter)))
     (when url
       (let* ((bf *supermegadoc-browse-url-function*)
              (browse-url-browser-function (or (and bf
@@ -73,7 +73,9 @@
 
 (defun supermegadoc-erlang ()
   (interactive)
-  (supermegadoc-html "erdoc.cdb"))
+  (let ((init-string (ffap-string-at-point)))
+    (setq init-string (replace-regexp-in-string ":" "/" init-string))
+    (supermegadoc-html "erdoc.cdb" init-string)))
 
 (defun supermegadoc-ri ()
   (interactive)
