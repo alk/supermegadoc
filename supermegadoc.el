@@ -94,7 +94,7 @@
   (let ((url (supermegadoc-run "man.cdb")))
     (when url
       ;; eat initial "man-file:"
-      (woman-find-file (substring url 9)))))
+      (man (substring url 9)))))
 
 (provide 'supermegadoc)
 ;;; supermegadoc.el ends here
