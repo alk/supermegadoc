@@ -56,7 +56,7 @@ unless File.readable?(cdb_path)
 end
 
 extra_args = `cdb -q -- '#{cdb_path}' --extra-args`
-output = `cdb -l -m '#{cdb_path}' | grep -v -- --extra-args | gpicker #{extra_args} #{mega_extra} --name-separator='\\n' -`.chomp
+output = `cdb -l -m '#{cdb_path}' | grep -v -- --extra-args | gpicker -l #{extra_args} #{mega_extra} --name-separator='\\n' -`.chomp
 exit if output.empty?
 
 alternatives = `cdb -q -- '#{cdb_path}' '#{output}'`.split("\0")
