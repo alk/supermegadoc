@@ -9,6 +9,9 @@ require 'active_support'
 
 require 'common'
 
+C_MODULES = %w(erl_nif erl_driver ic_clib ic_c_protocol
+               erl_set_memory_block erl_eterm ei ei_connect erl_marshal)
+
 def check_module_documentation(path)
   doc = Hpricot(IO.read(path))
   name_candidates = (doc/"body div.innertube > center > h1")
@@ -18,6 +21,7 @@ def check_module_documentation(path)
   end
 
   module_name = name_candidates[0].children[0].to_s
+  return if C_MODULES.include?(module_name)
 
   funs_hash = {}
 
@@ -34,8 +38,9 @@ def check_module_documentation(path)
       # STDERR.puts "ooops at #{text}.\nelement is #{element.pretty_inspect}" #\n\ndoc: #{doc.pretty_inspect}"
       next
     end
-    
+
     text = text[module_prefix.length..-1] if text.starts_with?(module_prefix)
+    text.gsub!(/\s*[\n\r]\s*/,' ')
     funs_hash[text] = fragment_name.to_s unless funs_hash[text]
   end
 
@@ -57,7 +62,7 @@ end
 data = ARGV.map do |path|
   if File.directory?(path)
     Dir.chdir(path) do
-      Dir['**/*.html'].forkoff do |fpath|
+      Dir['**/*.html'].forkoff(:processes => 4) do |fpath|
         process_file(fpath)
       end
     end
