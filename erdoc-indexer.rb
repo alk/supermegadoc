@@ -5,7 +5,7 @@ require 'pp'
 require 'rubygems'
 require 'forkoff'
 require 'hpricot'
-require 'active_support'
+require 'active_support/core_ext'
 
 require 'common'
 
