@@ -13,7 +13,7 @@ devhelp.cdb:
 	./devhelp-indexer.rb /usr/share/gtk-doc/html | cdb -cu $@
 
 man.cdb:
-	./man-indexer.rb /usr/share/man /usr/local/share/man | cdb -cu $@
+	./man-indexer.rb | cdb -cu $@
 
 install_cdb: $(BUILT_CDB_FILES)
 	mkdir -p ~/.supermegadoc

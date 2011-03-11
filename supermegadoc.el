@@ -93,8 +93,11 @@
   (require 'woman)
   (let ((url (supermegadoc-run "man.cdb")))
     (when url
-      ;; eat initial "man-file:"
-      (man (substring url 9)))))
+      ;; eat initial "man:"
+      (let* ((man-path (substring url 4))
+             (path (split-string man-path "/"))
+             (man-args (concat (car path) " " (cadr path))))
+          (man man-args)))))
 
 (provide 'supermegadoc)
 ;;; supermegadoc.el ends here
