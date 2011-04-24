@@ -61,15 +61,8 @@
 (defun supermegadoc-html (cdb-path &optional init-filter)
   (let ((url (supermegadoc-run cdb-path init-filter)))
     (when url
-      (let* ((bf *supermegadoc-browse-url-function*)
-             (browse-url-browser-function (or (and bf
-                                                   (indirect-function bf))
-                                              browse-url-browser-function)))
-        (when (and (listp browse-url-browser-function)
-                   (eql (car browse-url-browser-function) 'autoload))
-          (load (cadr browse-url-browser-function))
-          (setq browse-url-browser-function (indirect-function bf)))
-        (browse-url url)))))
+      (let ((code `(,*supermegadoc-browse-url-function* ',url)))
+        (eval code)))))
 
 (defun supermegadoc-erlang ()
   (interactive)
