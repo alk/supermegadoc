@@ -25,12 +25,17 @@ def check_module_documentation(path)
 
   funs_hash = {}
 
-  fun_names = (doc/"body div.innertube > p > a > span[@class=bold_code]")
+  fun_names = (doc/"body div.innertube > p > a > span.bold_code").to_a + (doc/"body div.innertube > p > span.bold_code").to_a
   #p fun_names.length
   module_prefix = module_name + ':'
   fun_names.each do |element|
     fragment_name = element.parent.attributes['name']
-    next if fragment_name.blank?
+    if fragment_name.blank?
+      anc = (element.parent)/"a[@name]"
+      next if anc.blank?
+      fragment_name = anc[0].attributes['name']
+      next if fragment_name.blank?
+    end
     text = element.children[0].to_s.strip
     next if text.empty?
     # pp text
@@ -58,6 +63,9 @@ def process_file(path)
   STDERR.puts(rv ? "ok" : "garbage")
   rv
 end
+
+# pp process_file("/usr/share/doc/erlang-doc/lib/stdlib-1.17.4/doc/html/lists.html")
+# exit
 
 data = ARGV.map do |path|
   if File.directory?(path)
