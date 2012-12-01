@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
 
 require 'pp'
 
@@ -36,7 +37,9 @@ def check_module_documentation(path)
       fragment_name = anc[0].attributes['name']
       next if fragment_name.blank?
     end
-    text = element.children[0].to_s.strip
+    # STDERR.puts element.children[0].to_s.strip
+    text = element.inner_text.gsub(/[\u00a0 ]+/," ") # replace multiple non-breakable or plain spaces with single space
+    # STDERR.puts text
     next if text.empty?
     # pp text
     unless text =~ /\A([^\(]+)\(/ || text =~ /\A([^\(]+)  &#60;/
@@ -64,6 +67,7 @@ def process_file(path)
   rv
 end
 
+# pp process_file("/usr/share/doc/erlang/lib/stdlib-1.18.2/doc/html/array.html")
 # pp process_file("/usr/share/doc/erlang-doc/lib/stdlib-1.17.4/doc/html/lists.html")
 # exit
 
