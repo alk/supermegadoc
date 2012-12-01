@@ -16,7 +16,6 @@ C_MODULES = %w(erl_nif erl_driver ic_clib ic_c_protocol
 def check_module_documentation(path)
   doc = Hpricot(IO.read(path))
   name_candidates = (doc/"body div.innertube > center > h1")
-  # pp name_candidates
   if name_candidates.size != 1 || name_candidates[0].children.size != 1 # || !(String === name_candidates[0].children[0])
     return
   end
@@ -27,7 +26,6 @@ def check_module_documentation(path)
   funs_hash = {}
 
   fun_names = (doc/"body div.innertube > p > a > span.bold_code").to_a + (doc/"body div.innertube > p > span.bold_code").to_a
-  #p fun_names.length
   module_prefix = module_name + ':'
   fun_names.each do |element|
     fragment_name = element.parent.attributes['name']
@@ -37,11 +35,8 @@ def check_module_documentation(path)
       fragment_name = anc[0].attributes['name']
       next if fragment_name.blank?
     end
-    # STDERR.puts element.children[0].to_s.strip
     text = element.inner_text.gsub(/[\u00a0 ]+/," ") # replace multiple non-breakable or plain spaces with single space
-    # STDERR.puts text
     next if text.empty?
-    # pp text
     unless text =~ /\A([^\(]+)\(/ || text =~ /\A([^\(]+)  &#60;/
       # STDERR.puts "ooops at #{text}.\nelement is #{element.pretty_inspect}" #\n\ndoc: #{doc.pretty_inspect}"
       next
