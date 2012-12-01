@@ -9,7 +9,7 @@ Erlang documentation is quite inconvenient to use. So I decided to use
 gpicker for quick browsing of available modules/functions and
 navigation to their corresponding html documentation.
 
-I've recently extended this code to ri, man and devhelp documentation.
+I've recently extended this code to ri (ruby 1.8 only), man and devhelp documentation.
 
 You will need recent gpicker (at least 2.0.0). From
 http://savannah.nongnu.org/projects/gpicker. Building from sources at
