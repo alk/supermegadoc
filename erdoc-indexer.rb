@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 require 'pp'
 
@@ -7,7 +7,7 @@ require 'forkoff'
 require 'hpricot'
 require 'active_support/core_ext'
 
-require 'common'
+require './common'
 
 C_MODULES = %w(erl_nif erl_driver ic_clib ic_c_protocol
                erl_set_memory_block erl_eterm ei ei_connect erl_marshal)

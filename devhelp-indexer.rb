@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'common'
+require './common'
 
 dir = ARGV[0] || raise("Need base dir! (e.g. /usr/share/gtk-doc/html)")
 

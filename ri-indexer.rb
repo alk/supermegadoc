@@ -13,7 +13,7 @@ end
 require 'net/http'
 require 'fileutils'
 
-require 'common'
+require './common'
 require 'pp'
 
 ARGV[0] || raise('I need ri path')

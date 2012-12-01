@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'common'
+require './common'
 
 IO.popen("whatis -l -r .", "r") do |f|
   f.each_line do |l|
