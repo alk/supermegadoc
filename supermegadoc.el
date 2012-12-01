@@ -26,6 +26,7 @@
 (require 'ffap)
 
 (defvar *supermegadoc-index-dir* (expand-file-name "~/.supermegadoc"))
+(defvar *supermegadoc-bin* (expand-file-name "supermegadoc" (file-name-directory load-file-name)))
 (defvar *supermegadoc-errors-log* (expand-file-name "~/supermegadoc-errors.log"))
 (defvar *supermegadoc-browse-url-function* 'w3m-browse-url)
 
@@ -51,7 +52,7 @@
 
 (defun supermegadoc-run (cdb-path &optional init-filter)
   (setq cdb-path (expand-file-name cdb-path *supermegadoc-index-dir*))
-  (let ((rv (supermegadoc-grab-stdout "supermegadoc"
+  (let ((rv (supermegadoc-grab-stdout *supermegadoc-bin*
                                       "--for-emacs"
                                       (concat "--init-filter=" (or init-filter (ffap-string-at-point)))
                                       cdb-path)))
