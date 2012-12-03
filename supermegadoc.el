@@ -26,7 +26,8 @@
 (require 'ffap)
 
 (defvar *supermegadoc-index-dir* (expand-file-name "~/.supermegadoc"))
-(defvar *supermegadoc-bin* (expand-file-name "supermegadoc" (file-name-directory load-file-name)))
+(defvar *supermegadoc-bin-in-script-dir* (expand-file-name "supermegadoc" (file-name-directory (file-truename load-file-name))))
+(defvar *supermegadoc-bin* nil)
 (defvar *supermegadoc-errors-log* (expand-file-name "~/supermegadoc-errors.log"))
 (defvar *supermegadoc-browse-url-function* 'w3m-browse-url)
 
@@ -50,9 +51,19 @@
           (delete-file *supermegadoc-errors-log*)
         (error nil)))))
 
+(defun supermegadoc-find-bin ()
+  ;; first we consider variable if it's non-nil
+  (or *supermegadoc-bin*
+      ;; then we consider script adjacent to .el
+      (let ((it *supermegadoc-bin-in-script-dir*))
+        (when (file-exists-p it)
+          it))
+      ;; and if it doesn't exist we use PATH
+      "supermegadoc"))
+
 (defun supermegadoc-run (cdb-path &optional init-filter)
   (setq cdb-path (expand-file-name cdb-path *supermegadoc-index-dir*))
-  (let ((rv (supermegadoc-grab-stdout *supermegadoc-bin*
+  (let ((rv (supermegadoc-grab-stdout (supermegadoc-find-bin)
                                       "--for-emacs"
                                       (concat "--init-filter=" (or init-filter (ffap-string-at-point)))
                                       cdb-path)))
