@@ -4,7 +4,7 @@ all: install_cdb
 BUILT_CDB_FILES = ri.cdb devhelp.cdb erdoc.cdb man.cdb
 
 ri.cdb:
-	./ri-indexer.rb /usr/share/ri/1.8 /var/lib/gems/1.8/doc | cdb -cu $@
+	./ri-indexer.rb | cdb -cu $@
 
 erdoc.cdb:
 	./erdoc-indexer.rb /usr/share/doc/erlang-doc | cdb -cu $@
