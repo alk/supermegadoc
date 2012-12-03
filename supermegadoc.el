@@ -87,7 +87,10 @@
   (let ((url (supermegadoc-run "ri.cdb")))
     (when url
       ;; eat initial "ri:"
-      (ri (substring url 3)))))
+      (let ((arg (substring url 3)))
+        (if (ignore-errors (symbol-function 'yari))
+            (yari arg)
+          (ri arg))))))
 
 (defun supermegadoc-devhelp ()
   (interactive)
