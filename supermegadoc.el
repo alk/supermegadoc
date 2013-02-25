@@ -107,5 +107,9 @@
              (man-args (concat (car path) " " (cadr path))))
           (man man-args)))))
 
+(defun supergo ()
+  (interactive)
+  (supermegadoc-html "go.cdb"))
+
 (provide 'supermegadoc)
 ;;; supermegadoc.el ends here

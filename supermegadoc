@@ -61,6 +61,20 @@ exit if output.empty?
 
 alternatives = `cdb -q -- '#{cdb_path}' '#{output}'`.split("\0")
 
+if (u = alternatives[0]) && u[0,6] == "godoc:"
+  rest = u[6..-1]
+  require 'socket'
+  running_local = begin
+                    s = TCPSocket.new("127.0.0.1:6060")
+                    s.close
+                    true
+                  rescue Exception
+                    false
+                  end
+  host = running_local ? "http://127.0.0.1:6060/pkg/" : "http://golang.org/pkg/"
+  alternatives[0] = host + rest
+end
+
 if $for_emacs
   print alternatives[0]
   exit

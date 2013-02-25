@@ -1,7 +1,7 @@
 
 all: install_cdb
 
-BUILT_CDB_FILES = ri.cdb devhelp.cdb erdoc.cdb man.cdb
+BUILT_CDB_FILES = ri.cdb devhelp.cdb erdoc.cdb man.cdb go.cdb
 
 ri.cdb:
 	./ri-indexer.rb | cdb -cu $@
@@ -15,6 +15,9 @@ devhelp.cdb:
 man.cdb:
 	./man-indexer.rb | cdb -cu $@
 
+go.cdb:
+	go run ./go-indexer.go | cdb -cu $@
+
 install_cdb: $(BUILT_CDB_FILES)
 	mkdir -p ~/.supermegadoc
 	cp $^ ~/.supermegadoc/
@@ -23,4 +26,4 @@ install: supermegadoc
 	cp supermegadoc /usr/local/bin/
 	ln -f /usr/local/bin/supermegadoc /usr/local/bin/superman
 
-.PHONY: ri.cdb devhelp.cdb erdoc.cdb man.cdb install_cdb
+.PHONY: ri.cdb devhelp.cdb erdoc.cdb man.cdb go.cdb install_cdb

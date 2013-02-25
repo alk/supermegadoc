@@ -1,3 +1,10 @@
+Code I've written for this project is gpl3. Which text is copied
+below.
+
+go-indexer.go contains parts copied from go implementation which is
+apparently under 3-clause BSD which is incompatible with gpl.
+
+=============
 
 		    GNU GENERAL PUBLIC LICENSE
 		       Version 3, 29 June 2007
