@@ -65,7 +65,7 @@ if (u = alternatives[0]) && u[0,6] == "godoc:"
   rest = u[6..-1]
   require 'socket'
   running_local = begin
-                    s = TCPSocket.new("127.0.0.1:6060")
+                    s = TCPSocket.new("127.0.0.1", 6060)
                     s.close
                     true
                   rescue Exception
