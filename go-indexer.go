@@ -123,6 +123,11 @@ func tryImport(root, relpath string) error {
 			outputCDB(relpath+"/"+name+"$meth",
 				"godoc:"+relpath+"#"+typename+"."+fun.Name)
 		}
+		for _, fun := range tp.Funcs {
+			name := fun.Name
+			outputCDB(relpath+"/"+name+"$func",
+				"godoc:"+relpath+"#"+name)
+		}
 	}
 
 	for _, vr := range pdoc.Vars {
