@@ -109,7 +109,12 @@
 
 (defun supergo ()
   (interactive)
-  (supermegadoc-html "go.cdb"))
+  (let ((init-string (ffap-string-at-point)))
+    (setq init-string (replace-regexp-in-string "\\." "/" init-string))
+    (let ((value (supermegadoc-run "go.cdb" init-string)))
+      (when value
+        (godoc value)))
+    ))
 
 (provide 'supermegadoc)
 ;;; supermegadoc.el ends here
